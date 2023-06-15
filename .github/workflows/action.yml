@@ -1,21 +1,23 @@
 name: Artifact Test
 
 on:
-  pull request:
+  pull_request:
     branches:
       - main
   push:
     branches:
       - main
       
-steps:
-- uses: actions/checkout@v3
+jobs:
+  steps:
+    - name: upload artifact
+    - uses: actions/checkout@v3
 
-- run: mkdir -p /artifact
+    - run: mkdir -p /artifact
 
-- run: echo hello > path/to/artifact/world.txt
+    - run: echo hello > path/to/artifact/world.txt
 
-- uses: actions/upload-artifact@v3
-  with:
-    name: my-artifact
-    path: /world.txt
+    - uses: actions/upload-artifact@v3
+      with:
+        name: my-artifact
+        path: /world.txt
