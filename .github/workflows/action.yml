@@ -1,23 +1,28 @@
-name: Artifact Test
+name: Publish GitHub Actions Artifacts Example
 
 on:
-  pull_request:
-    branches:
-      - main
   push:
-    branches:
-      - main
-      
+    branches: [ main ]
+
 jobs:
-  steps:
-    - name: upload artifact
-    - uses: actions/checkout@v3
+       
+  archive-build-artifacts:
+    runs-on: ubuntu-latest
+    steps:
 
-    - run: mkdir -p /artifact
-
-    - run: echo hello > path/to/artifact/world.txt
-
-    - uses: actions/upload-artifact@v3
-      with:
-        name: my-artifact
-        path: /world.txt
+      - name: Step 1 - Create a temporary artifact downloads folder
+        run: mkdir downloads
+        
+      - name: step 2 - Add artifacts to publish to the temp folder
+        run: |
+          cd downloads
+          echo 'alpha'    > alpha.txt
+          echo 'bravo'    > bravo.txt
+          echo 'charlie'  > charlie.txt
+          cd ..
+    
+      - name: Step 3 - Use the Upload Artifact GitHub Action
+        uses: actions/upload-artifact@v2
+        with: 
+          name: assets-for-download
+          path: downloads
